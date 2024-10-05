@@ -1,0 +1,33 @@
+body {
+    text-align: center;
+}
+
+#weather-output {
+    width: 70vw;
+    height: 40vh;
+    background-color: rgb(139, 152, 195);
+    margin: 5em auto;
+    border-radius: 20px;
+}
+
+.container {
+    margin: 100px 0 0 200px;
+    width: 70%;
+    height: 450px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.container div {
+    width: 10%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid rgb(195, 195, 197);
+    transition: all ease-in-out 0.5s;
+}
+
+.container div:hover {
+    width: 25%;
+}
