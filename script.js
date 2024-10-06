@@ -1,10 +1,11 @@
 const searchInput = document.getElementById('search-input');
 const searchBtn = document.getElementById('search-btn');
 const apiKey = 'e15b5d4e2122f88d61de43e6945e56db';
-let city = 'Berlin';
-const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+
 
 const fetchData = async(city) => {
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
     try {
         const res = await fetch(weatherUrl);
         const data = await res.json();
@@ -14,6 +15,22 @@ const fetchData = async(city) => {
         return null;
     }
 }
+
+// lat, los => breitengrad, längengrad (Geografische Koordinaten)
+const fetchForecast = async(lat, lon) => {
+    const forecastUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly&appid=${apiKey}&units=metric`;
+
+    try {
+        const res = await fetch(forecastUrl);
+        const data = await res.json();
+        
+        console.log(data);
+    } catch (e) {
+        console.log('Error fetching the forecast data: ', e);
+        return null;
+    }
+}
+fetchForecast();
 
 
 const searchCity = async() => {
@@ -38,18 +55,18 @@ const searchCity = async() => {
         let visibility = data.visibility;
 
         document.getElementById('weather-output').innerHTML = `
-        <h2>${cityName}, ${country}</h2>
         <div class="container">
+        <h2>${cityName}, ${country}</h2>
+    
         <div class="icon-container">
-        <span>Temperature: ${temperature}°C</span>
-        <span>Feels like: ${feelsLike}°C</span>
-        <img src="${icon}" alt="Weather icon">
-        <span>${description}</span>
-        <span>Wind speed: ${windSpeed} m/s, deg: ${windDeg}°, gust: ${windGust}km/h</span>
-        <span>Sunrise: ${sunrise} | Sunset: ${sunset}</span>
-        <span>Clouds Overall: ${cloudsOverall}%  | visibility: ${visibility} meters</span>
+        <span id="temp">${temperature}°C</span>
+        <p class="font-size-down">Feels like: <span>${feelsLike}°C</span></p><br>
+        <img id="icon" src="${icon}" alt="Weather icon"><br>
+        <span id="descr">${description}</span><br>
+        <p class="font-size-down">Wind speed: <span>${windSpeed}</span> m/s, deg: <span>${windDeg}</span>°, gust: <span>${windGust}</span>km/h</p>
+        <p class="font-size-down">Sunrise: <span>${sunrise} | Sunset: <span>${sunset}</span></p>
+        <p class="font-size-down">Clouds Overall: <span>${cloudsOverall}</span>%  | visibility: <span>${visibility}</span> meters</p>
         </div>
-        
         </div>
         `;
     }
